@@ -1,6 +1,9 @@
 import Head from "next/head";
 import styles from "./styles.module.scss";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 import { FaPlus, FaCalendar, FaEdit, FaTrash, FaClock } from "react-icons/fa";
+import { SupportButton } from "../../components/SupportButton";
 
 export default function Board() {
   return (
@@ -45,6 +48,31 @@ export default function Board() {
           <time>Última doação foi a 3 dias</time>
         </div>
       </div>
+      <SupportButton />
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  if(!session){
+    return{
+      redirect:{
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+
+  console.log(session.user);
+
+  return{
+    props:{
+
+    }
+  }
+
+}
+
